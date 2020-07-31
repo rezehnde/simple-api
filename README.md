@@ -47,12 +47,14 @@ POST to https://simple-api.rezehnde.com/user/delete/1
 where 1 is the user id
 
 ## :house: Running locally
+```
 git clone https://github.com/rezehnde/simple-api.git
 composer update
 php bin/console doctrine:database:create
 php bin/console doctrine:migrations:migrate
 symfony server:start
 http://127.0.0.1:8000/
+```
 
 ## :triangular_ruler: Built with 
 
