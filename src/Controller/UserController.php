@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\Validator;
 
 class UserController extends AbstractController
 {
@@ -34,13 +35,10 @@ class UserController extends AbstractController
     public function create(Request $request, EntityManagerInterface $entityManager, ValidatorInterface $validator)
     {
         $user = new User();
-        $user->setEmail($request->get('email'));
-        $user->setFirstName($request->get('first_name'));
-        $user->setLastName($request->get('last_name'));
 
-        $errors = $validator->validate($user);
-        if (count($errors) > 0) {
-            return new JsonResponse((string) $errors, 400);
+        $errors = [];
+        if (!$this->validate($user, $request, $errors, $validator)) {
+            return new JsonResponse($errors, 400);
         }
 
         $entityManager->persist($user);
@@ -80,13 +78,9 @@ class UserController extends AbstractController
             return new JsonResponse('No user found for id '.$id, 400);
         }
 
-        $user->setEmail($request->get('email'));
-        $user->setFirstName($request->get('first_name'));
-        $user->setLastName($request->get('last_name'));
-
-        $errors = $validator->validate($user);
-        if (count($errors) > 0) {
-            return new JsonResponse((string) $errors, 400);
+        $errors = [];
+        if (!$this->validate($user, $request, $errors, $validator)) {
+            return new JsonResponse($errors, 400);
         }
 
         $entityManager->persist($user);
@@ -112,5 +106,32 @@ class UserController extends AbstractController
         $entityManager->flush();
 
         return new JsonResponse('User '.$id.' deleted', 200);
+    }
+
+    /**
+     * Validate data for the create and update events
+     */
+    private function validate(User $user, Request $request, array &$errors, ValidatorInterface $validator)
+    {
+        if (!empty($request->get('email')))
+            $user->setEmail($request->get('email'));
+
+        if (!empty($request->get('first_name')))
+            $user->setFirstName($request->get('first_name'));
+
+        if (!empty($request->get('last_name')))
+            $user->setLastName($request->get('last_name'));
+
+        $validationList = $validator->validate($user);
+        $errors = [];
+        foreach ($validationList as $validation) {
+            $errors['errors'][] = $validation->getPropertyPath() . ': '.$validation->getMessage();
+        }
+
+        if (count($errors) > 0) {
+            return false;
+        }
+
+        return true;
     }
 }
