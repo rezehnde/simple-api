@@ -24,7 +24,7 @@ POST to https://simple-api.rezehnde.com/user/create with body:
 {
   email = 'rezehnde@gmail.com',
   first_name = 'Marcos',
-  last_name = 'Resende'
+  last_name = 'Rezende'
 }
 ```
 
