@@ -15,21 +15,11 @@ The goal is to be able to swap out the data source for users without having to t
 
 ## :muscle: Try it out 
 
-## :house: Running locally
-```
-git clone https://github.com/rezehnde/simple-api.git
-composer update
-php bin/console doctrine:database:create
-php bin/console doctrine:migrations:migrate
-symfony server:start
-http://127.0.0.1:8000/
-```
-
 ### Show All Users
-GET to http://127.0.0.1:8000/
+GET to https://simple-api.rezehnde.com/
 
 ### Create User
-POST to http://127.0.0.1:8000/user/create with body:
+POST to https://simple-api.rezehnde.com/user/create with body:
 ```
 {
   email = 'rezehnde@gmail.com',
@@ -39,11 +29,11 @@ POST to http://127.0.0.1:8000/user/create with body:
 ```
 
 ### Read User
-GET to http://127.0.0.1:8000/user/1
+GET to https://simple-api.rezehnde.com/user/1
 where 1 is the user id
 
 ### Update User
-POST to http://127.0.0.1:8000/user/update/1 with body:
+POST to https://simple-api.rezehnde.com/user/update/1 with body:
 ```
 {
   email = 'rezehnde@gmail.com',
@@ -53,8 +43,18 @@ POST to http://127.0.0.1:8000/user/update/1 with body:
 ```
 
 ### Delete User
-POST to http://127.0.0.1:8000/user/delete/1
+POST to https://simple-api.rezehnde.com/user/delete/1
 where 1 is the user id
+
+## :house: Running locally
+```
+git clone https://github.com/rezehnde/simple-api.git
+composer update
+php bin/console doctrine:database:create
+php bin/console doctrine:migrations:migrate
+symfony server:start
+http://127.0.0.1:8000/
+```
 
 ## :triangular_ruler: Built with 
 
