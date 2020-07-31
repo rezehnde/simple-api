@@ -15,37 +15,6 @@ The goal is to be able to swap out the data source for users without having to t
 
 ## :muscle: Try it out 
 
-### Show All Users
-GET to https://simple-api.rezehnde.com/
-
-### Create User
-POST to https://simple-api.rezehnde.com/user/create with body:
-```
-{
-  email = 'rezehnde@gmail.com',
-  first_name = 'Marcos',
-  last_name = 'Resende'
-}
-```
-
-### Read User
-GET to https://simple-api.rezehnde.com/user/1
-where 1 is the user id
-
-### Update User
-POST to https://simple-api.rezehnde.com/user/update/1 with body:
-```
-{
-  email = 'rezehnde@gmail.com',
-  first_name = 'Marcos',
-  last_name = 'Rezende'
-}
-```
-
-### Delete User
-POST to https://simple-api.rezehnde.com/user/delete/1
-where 1 is the user id
-
 ## :house: Running locally
 ```
 git clone https://github.com/rezehnde/simple-api.git
@@ -55,6 +24,37 @@ php bin/console doctrine:migrations:migrate
 symfony server:start
 http://127.0.0.1:8000/
 ```
+
+### Show All Users
+GET to http://127.0.0.1:8000/
+
+### Create User
+POST to http://127.0.0.1:8000/user/create with body:
+```
+{
+  email = 'rezehnde@gmail.com',
+  first_name = 'Marcos',
+  last_name = 'Resende'
+}
+```
+
+### Read User
+GET to http://127.0.0.1:8000/user/1
+where 1 is the user id
+
+### Update User
+POST to http://127.0.0.1:8000/user/update/1 with body:
+```
+{
+  email = 'rezehnde@gmail.com',
+  first_name = 'Marcos',
+  last_name = 'Rezende'
+}
+```
+
+### Delete User
+POST to http://127.0.0.1:8000/user/delete/1
+where 1 is the user id
 
 ## :triangular_ruler: Built with 
 
