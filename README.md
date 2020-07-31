@@ -48,12 +48,15 @@ where 1 is the user id
 
 ## :house: Running locally
 ```
-git clone https://github.com/rezehnde/simple-api.git
+mkdir simple-api
+cd simple-api
+git init
+git remote add origin https://github.com/rezehnde/simple-api.git
+git pull origin master
 composer update
 php bin/console doctrine:database:create
 php bin/console doctrine:migrations:migrate
 symfony server:start
-http://127.0.0.1:8000/
 ```
 
 ## :triangular_ruler: Built with 
