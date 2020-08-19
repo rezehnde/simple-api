@@ -10,6 +10,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Validator;
+use App\Repository\UserRepository;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class UserController extends AbstractController
 {
@@ -18,13 +20,13 @@ class UserController extends AbstractController
      *
      * @Route("/", name="users", methods={"GET","HEAD"})
      */
-    public function show(EntityManagerInterface $entityManager)
+    public function show(UserRepository $userRepository, SerializerInterface $serializer)
     {
-        $query = $entityManager->createQuery('SELECT u FROM App:User u');
+        $users = $userRepository->findAll();
 
-        $users = $query->getArrayResult();
+        $usersJson = $serializer->serialize($users, 'json');
 
-        return new JsonResponse($users, 200);
+        return JsonResponse::fromJsonString($usersJson, 200);
     }
 
     /**
@@ -44,7 +46,7 @@ class UserController extends AbstractController
         $entityManager->persist($user);
         $entityManager->flush();
 
-        return new JsonResponse('Saved new product with id '.$user->getId(), 200);
+        return JsonResponse::fromJsonString('Saved new product with id '.$user->getId(), 200);
     }
 
     /**
@@ -52,17 +54,17 @@ class UserController extends AbstractController
      *
      * @Route("/user/{id}", name="user_read", methods={"GET"})
      */
-    public function read(int $id, EntityManagerInterface $entityManager)
+    public function read(int $id, EntityManagerInterface $entityManager, SerializerInterface $serializer)
     {
-        $query = $entityManager->createQuery('SELECT u FROM App:User u WHERE u.id = '.$id);
-
-        $user = $query->getArrayResult();
+        $user = $entityManager->getRepository(User::class)->find($id);
 
         if (!$user) {
-            return new JsonResponse('No user found for id '.$id, 400);
+            return JsonResponse::fromJsonString('No user found for id '.$id, 400);
         }
 
-        return new JsonResponse($user, 200);
+        $userJson = $serializer->serialize($user, 'json');
+
+        return JsonResponse::fromJsonString($userJson, 200);
     }
 
     /**
@@ -70,23 +72,24 @@ class UserController extends AbstractController
      *
      * @Route("/user/update/{id}", name="user_update", methods={"POST"})
      */
-    public function update(int $id, EntityManagerInterface $entityManager, Request $request, ValidatorInterface $validator)
+    public function update(int $id, EntityManagerInterface $entityManager, Request $request, ValidatorInterface $validator, SerializerInterface $serializer)
     {
         $user = $entityManager->getRepository(User::class)->find($id);
 
         if (!$user) {
-            return new JsonResponse('No user found for id '.$id, 400);
+            return JsonResponse::fromJsonString('No user found for id '.$id, 400);
         }
 
         $errors = [];
         if (!$this->validate($user, $request, $errors, $validator)) {
-            return new JsonResponse($errors, 400);
+            $errorsJson = $serializer->serialize($errors, 'json');
+            return JsonResponse::fromJsonString($errorsJson, 400);
         }
 
         $entityManager->persist($user);
         $entityManager->flush();
 
-        return new JsonResponse('User '.$id.' updated', 200);
+        return JsonResponse::fromJsonString('User '.$id.' updated', 200);
     }
 
     /**
@@ -99,13 +102,13 @@ class UserController extends AbstractController
         $user = $entityManager->getRepository(User::class)->find($id);
 
         if (!$user) {
-            return new JsonResponse('No user found for id '.$id, 400);
+            return JsonResponse::fromJsonString('No user found for id '.$id, 400);
         }
 
         $entityManager->remove($user);
         $entityManager->flush();
 
-        return new JsonResponse('User '.$id.' deleted', 200);
+        return JsonResponse::fromJsonString('User '.$id.' deleted', 200);
     }
 
     /**
