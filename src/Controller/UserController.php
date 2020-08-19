@@ -46,7 +46,7 @@ class UserController extends AbstractController
         $entityManager->persist($user);
         $entityManager->flush();
 
-        return JsonResponse::fromJsonString('Saved new product with id '.$user->getId(), 200);
+        return JsonResponse::fromJsonString('Saved new user with id '.$user->getId(), 200);
     }
 
     /**
