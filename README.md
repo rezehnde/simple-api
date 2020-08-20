@@ -71,6 +71,6 @@ docker-compose run --rm php bin/console doctrine:fixtures:load
 
 ### :mag: Backlog 
 
-* [ ] Implement an authentication method to consume the API
-* [ ] Include Unit Tests
-* [ ] CI/CD using Git on a Shared Host with cPanel
+* [ ] Implement an authentication method to handle the API
+* [ ] Include Unit Tests and Functional Testes
+* [ ] CI/CD using Git on a Shared Host with Jenkins
