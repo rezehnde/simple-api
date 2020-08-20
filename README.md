@@ -46,18 +46,18 @@ POST to https://simple-api.rezehnde.com/user/update/1 with body:
 POST to https://simple-api.rezehnde.com/user/delete/1
 where 1 is the user id
 
-## :house: Running locally
+## :house: Running locally (with Docker)
 ```
 mkdir simple-api
 cd simple-api
 git init
 git remote add origin https://github.com/rezehnde/simple-api.git
 git pull origin master
-composer update
-php bin/console doctrine:database:create
-php bin/console doctrine:migrations:migrate
-php bin/console doctrine:fixtures:load
-symfony server:start
+docker-compose up -d --build simpleapi
+docker-compose run --rm composer update
+docker-compose run --rm php bin/console doctrine:database:create
+docker-compose run --rm php bin/console doctrine:migrations:migrate
+docker-compose run --rm php bin/console doctrine:fixtures:load
 ```
 
 ## :triangular_ruler: Built with 
